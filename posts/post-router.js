@@ -6,7 +6,7 @@ const db = require('../data/dbConfig');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    db.select('*').from('posts')
+    db.select('*')
     .from("accounts")
     .limit(3)
     .orderBy("budget", "desc")
@@ -16,8 +16,42 @@ router.get('/', (req, res) => {
         console.log(error)
         res.status(500).json({error: 'failed son'})
     })
-    
 });
+
+// router.get("/:id", (req, res) => {
+//     // a post by it's id
+//     // select * from posts where id = :id
+//     const id = req.params.id
+//     db('accounts')
+//     .where({ id })
+//     .first()
+//       .then(post => {
+//         res.status(200).json(post);
+//       })
+//       .catch(error => {
+//         console.log(error);
+  
+//         res.status(500).json({ error: "failed to get the post" });
+//       });
+//   });
+
+//   function getById(id) {
+//     return db("accounts")
+//       .where({ id })
+//       .first();
+//   }
+
+  router.get("/:id", (req, res) => {
+    getById(req.params.id)
+      .then(post => {
+        res.status(200).json(post);
+      })
+      .catch(error => {
+        console.log(error);
+  
+        res.status(500).json({ error: "failed to get the post" });
+      });
+  });
 
 
 router.post('/', (req, res) => {
@@ -62,7 +96,7 @@ module.exports = router;
 
 
 function getById(id) {
-    return db("posts")
+    return db("accounts")
       .where({ id })
       .first();
   }
